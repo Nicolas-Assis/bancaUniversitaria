@@ -448,6 +448,7 @@
         <option value="Célia">Célia</option>
         <option value="Elen">Elen</option>
         <option value="Igor">Igor</option>
+        <option value="__admin__">🛡️ Administrador</option>
       </select>
     </div>
     <div class="field">
@@ -841,10 +842,21 @@
     const err = document.getElementById('login-error');
     const btn = document.getElementById('btn-enter');
     if(!jurado){ err.textContent = 'Selecione seu nome.'; return; }
-    if(senha !== SENHA){ err.textContent = 'Senha incorreta.'; return; }
     err.textContent = '';
     btn.disabled = true;
     btn.innerHTML = '<span class="spin bi bi-arrow-repeat"></span> Entrando…';
+
+    // Admin direto
+    if(jurado === '__admin__'){
+      if(senha !== SENHA_ADMIN){ err.textContent = 'Senha de administrador incorreta.'; btn.disabled=false; btn.innerHTML='<i class="bi bi-box-arrow-in-right"></i> Entrar na banca'; return; }
+      showScreen('screen-admin');
+      await loadAdmin();
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Entrar na banca';
+      return;
+    }
+
+    if(senha !== SENHA){ err.textContent = 'Senha incorreta.'; btn.disabled=false; btn.innerHTML='<i class="bi bi-box-arrow-in-right"></i> Entrar na banca'; return; }
     currentJurado = jurado;
     await loadEvals();
     await loadPhotoUrls();
