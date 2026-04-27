@@ -1,0 +1,7 @@
+.DS_Store
+Thumbs.db
+*.heic
+*.HEIC
+node_modules/
+.env
+.env.local
